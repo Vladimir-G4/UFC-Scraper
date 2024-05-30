@@ -1,5 +1,6 @@
 # UFC Scraper
 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/UFC_Logo.png" width="250"/>
+https://www.npmjs.com/package/ufc-scraper
 
 ## Overview
 
