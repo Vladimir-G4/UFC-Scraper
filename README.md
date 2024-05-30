@@ -3,7 +3,7 @@
 
 ## Overview
 
-The `ufc-scraper` package provides a set of functions to scrape UFC fighter information, statistics, and rankings from the UFC website. It uses `axios` for making HTTP requests and `cheerio` for parsing HTML content. This package enables you to programmatically retrieve detailed UFC fighter data, including fight history, personal stats, and official rankings.
+The `ufc-scraper` package provides a set of functions to scrape UFC fighter information, statistics, and rankings from the UFC website. It uses `axios` for making HTTP requests and `cheerio` for parsing HTML content. This package enables you to programmatically retrieve detailed UFC fighter data, including fighter information, statistics, and official rankings.
 
 ## Installation
 
@@ -95,7 +95,7 @@ Retrieves basic information about the fighter, including name, nickname, status,
 
 Retrieves detailed statistics about the fighter, including their record, win methods, average fight time, significant strikes by position and target, striking accuracy, and takedown accuracy.
 
-### `getRankings(): Promise<RankingsDict | null>`
+### `getRankings(): Promise<Rankings | null>`
 
 Retrieves the current UFC rankings, categorized by weight class.
 
