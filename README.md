@@ -4,7 +4,7 @@ https://www.npmjs.com/package/ufc-scraper
 
 ## Overview
 
-The `ufc-scraper` package provides a set of functions to scrape UFC fighter information, statistics, and rankings from the UFC website. It uses `axios` for making HTTP requests and `cheerio` for parsing HTML content. This package enables you to programmatically retrieve detailed UFC fighter data, including fighter information, statistics, and official rankings.
+The `ufc-scraper` package provides a set of functions to scrape UFC fighter information, statistics, and rankings from the UFC website. It uses `axios` for making HTTP requests and `cheerio` for parsing HTML content. This package enables you to programmatically retrieve detailed UFC fighter data, including fighter information, statistics, records, and official rankings.
 
 ## Installation
 
@@ -230,10 +230,10 @@ interface Titleholders {
 
 ```typescript
 interface Records {
-  [category: string]: {
-    [rank: number]: {
-      fighter: string;
-      statistic: string;
+  [Category: string]: {
+    [Rank: number]: {
+      Fighter: string;
+      Statistic: string;
     }
   };
 }
@@ -307,40 +307,6 @@ getRankings().then((rankings) => {
     '14': 'Sean Strickland',
     '15': 'Aljamain Sterling'
   },
-  Flyweight: {
-    '1': 'Brandon Royval',
-    '2': 'Brandon Moreno',
-    '3': 'Amir Albazi',
-    '4': 'Kai Kara-France',
-    '5': 'Alex Perez',
-    '6': 'Muhammad Mokaev',
-    '7': 'Manel Kape',
-    '8': 'Matheus Nicolau',
-    '9': 'Steve Erceg',
-    '10': 'Tim Elliott',
-    '11': 'Matt Schnell',
-    '12': 'Tagir Ulanbekov',
-    '13': 'Tatsuro Taira',
-    '14': 'Sumudaerji',
-    '15': 'David Dvorak'
-  },
-  Bantamweight: {
-    '1': 'Merab Dvalishvili',
-    '2': 'Cory Sandhagen',
-    '3': 'Petr Yan',
-    '4': 'Marlon Vera',
-    '5': 'Henry Cejudo',
-    '6': 'Deiveson Figueiredo',
-    '7': 'Song Yadong',
-    '8': 'José Aldo',
-    '9': 'Rob Font',
-    '10': 'Umar Nurmagomedov',
-    '11': 'Kyler Phillips',
-    '12': 'Mario Bautista',
-    '13': 'Dominick Cruz',
-    '14': 'Jonathan Martinez',
-    '15': 'Pedro Munhoz'
-  },
   etc...
 }
 */
@@ -369,16 +335,16 @@ getRecords().then((records) => {
 /* Returns the following: 
 {
   'Total Fights': {
-    '1': { fighter: 'Jim Miller', statistic: '44' },
-    '2': { fighter: 'Andrei Arlovski', statistic: '41' },
-    '3': { fighter: 'Donald Cerrone', statistic: '38' },
-    '4': { fighter: 'Clay Guida', statistic: '36' },
-    '5': { fighter: 'Rafael Dos Anjos', statistic: '35' },
-    '6': { fighter: 'Jeremy Stephens', statistic: '34' },
-    '7': { fighter: 'Demian Maia', statistic: '33' },
-    '8': { fighter: 'Charles Oliveira', statistic: '33' },
-    '9': { fighter: 'Diego Sanchez', statistic: '32' },
-    '10': { fighter: 'Neil Magny', statistic: '32' }
+    '1': { Fighter: 'Jim Miller', Statistic: '44' },
+    '2': { Fighter: 'Andrei Arlovski', Statistic: '41' },
+    '3': { Fighter: 'Donald Cerrone', Statistic: '38' },
+    '4': { Fighter: 'Clay Guida', Statistic: '36' },
+    '5': { Fighter: 'Rafael Dos Anjos', Statistic: '35' },
+    '6': { Fighter: 'Jeremy Stephens', Statistic: '34' },
+    '7': { Fighter: 'Demian Maia', Statistic: '33' },
+    '8': { Fighter: 'Charles Oliveira', Statistic: '33' },
+    '9': { Fighter: 'Diego Sanchez', Statistic: '32' },
+    '10': { Fighter: 'Neil Magny', Statistic: '32' }
   },
   etc...
 }

@@ -1,7 +1,7 @@
 {
   "name": "ufc-scraper",
-  "version": "0.1.5",
-  "description": "An API to scrape UFC fighter information, statistics, and rankings from UFC.com",
+  "version": "0.1.6",
+  "description": "An API to scrape UFC fighter information, statistics, records, and rankings from UFC.com",
   "main": "dist/ufc_scraper.js",
   "types": "dist/types/ufc_scraper.d.ts",
   "scripts": {
@@ -17,6 +17,7 @@
     "UFC API",
     "UFC Scraper",
     "UFC Stats",
+    "UFC Records",
     "MMA Stats"
   ],
   "author": "Vladimir Gutierrez",

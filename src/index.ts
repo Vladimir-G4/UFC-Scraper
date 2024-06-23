@@ -147,7 +147,7 @@ export async function getFighterStats(fighterName: string = 'max holloway'): Pro
 }
 
 interface Rankings {
-  [Division: string]: { [rank: number]: string };
+  [Division: string]: { [Rank: number]: string };
 }
 
 export async function getRankings(): Promise<Rankings | null> {
@@ -161,7 +161,7 @@ export async function getRankings(): Promise<Rankings | null> {
 
     $('.view-grouping').each((i, element) => {
       let header = $(element).find('.view-grouping-header').text().trim();
-      let rankings: { [rank: number]: string } = {};
+      let rankings: { [Rank: number]: string } = {};
 
       $(element).find('tbody tr').each((j, row) => {
         let rank = parseInt($(row).find('.views-field-weight-class-rank').text().trim(), 10);
@@ -199,7 +199,7 @@ export async function getTitleholders(): Promise<Titleholders | null> {
     let titleholdersDict: Titleholders = {};
 
     $('.l-listing__item').each((i, element) => {
-      let division = $(element).find('.ath-wlcass strong').text().trim().toString();
+      let division = $(element).find('.ath-wlcass strong').text().trim();
       let weight = $(element).find('.ath-weight').text().trim();
       let champName = $(element).find('.ath-n__name a span').text().trim();
       let champNickname = $(element).find('.ath-nn__nickname .field__item').text().trim();
@@ -225,10 +225,10 @@ export async function getTitleholders(): Promise<Titleholders | null> {
 }
 
 interface Records {
-  [category: string]: {
-    [rank: number]: {
-      fighter: string;
-      statistic: string;
+  [Category: string]: {
+    [Rank: number]: {
+      Fighter: string;
+      Statistic: string;
     }
   };
 }
@@ -252,7 +252,7 @@ export async function getRecords(): Promise<Records | null> {
         let total = $(row).find('span').eq(2).text().trim();
 
         if (rank && fighter && total) {
-          recordsDict[category][rank] = { fighter, statistic: total };
+          recordsDict[category][rank] = { Fighter: fighter, Statistic: total };
         }
       });
     });
