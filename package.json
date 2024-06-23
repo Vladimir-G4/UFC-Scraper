@@ -1,6 +1,6 @@
 {
   "name": "ufc-scraper",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "description": "An API to scrape UFC fighter information, statistics, and rankings from UFC.com",
   "main": "dist/ufc_scraper.js",
   "types": "dist/types/ufc_scraper.d.ts",

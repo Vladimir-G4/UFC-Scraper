@@ -3,7 +3,7 @@
 
 ## Overview
 
-The `ufc-scraper` package provides a set of functions to scrape UFC fighter information, statistics, and rankings from the UFC website. It uses `axios` for making HTTP requests and `cheerio` for parsing HTML content. This package enables you to programmatically retrieve detailed UFC fighter data, including fight history, personal stats, and official rankings.
+The `ufc-scraper` package provides a set of functions to scrape UFC fighter information, statistics, and rankings from the UFC website. It uses `axios` for making HTTP requests and `cheerio` for parsing HTML content. This package enables you to programmatically retrieve detailed UFC fighter data, including fighter information, statistics, and official rankings.
 
 ## Installation
 
@@ -81,6 +81,38 @@ getRankings().then(rankings => {
 });
 ```
 
+### `getTitleholders`
+
+Retrieves the current UFC titleholders, categorized by division.
+
+```typescript
+import { getTitleholders } from 'ufc-scraper';
+
+getTitleholders().then(titleholders => {
+  if (titleholders) {
+    console.log(titleholders);
+  } else {
+    console.log('Failed to retrieve titleholders.');
+  }
+});
+```
+
+### `getRecords`
+
+Retrieves UFC career records and statistics across various categories.
+
+```typescript
+import { getRecords } from 'ufc-scraper';
+
+getRecords().then(records => {
+  if (records) {
+    console.log(records);
+  } else {
+    console.log('Failed to retrieve records.');
+  }
+});
+```
+
 ## Functions
 
 ### `getFighter(fighterName: string): Promise<Fighter | null>`
@@ -95,9 +127,15 @@ Retrieves basic information about the fighter, including name, nickname, status,
 
 Retrieves detailed statistics about the fighter, including their record, win methods, average fight time, significant strikes by position and target, striking accuracy, and takedown accuracy.
 
-### `getRankings(): Promise<RankingsDict | null>`
+### `getRankings(): Promise<Rankings | null>`
 
 Retrieves the current UFC rankings, categorized by weight class.
+
+### `getTitleholders(): Promise<Titleholders | null>`
+Retrieves the current UFC titleholders, categorized by division.
+
+### `getRecords(): Promise<Records | null>`
+Retrieves UFC career records and statistics across various categories.
 
 ## Interfaces
 
@@ -173,6 +211,33 @@ interface Rankings {
 }
 ```
 
+### `Titleholders`
+
+```typescript
+interface Titleholders {
+  [Division: string]: {
+    Weight: string;
+    ChampName: string;
+    ChampNickname: string;
+    ChampRecord: string;
+    ChampLastFight: string;
+  };
+}
+```
+
+### 'Records'
+
+```typescript
+interface Records {
+  [category: string]: {
+    [rank: number]: {
+      fighter: string;
+      statistic: string;
+    }
+  };
+}
+```
+
 ## Error Handling
 
 Each function logs errors to the console and returns `null` in case of any issues encountered during the scraping process. Make sure to handle `null` values appropriately in your application to avoid unexpected crashes.
@@ -182,7 +247,7 @@ Each function logs errors to the console and returns `null` in case of any issue
 Here is a complete example of using the `ufc-scraper` package to retrieve and display information about a specific UFC fighter:
 
 ```typescript
-import { getFighter, getRankings } from 'ufc-scraper';
+import { getFighter, getRankings, getTitleholders, getRecords } from 'ufc-scraper';
 
 getFighter('max holloway').then((fighter) => {
     console.log(fighter);
@@ -278,6 +343,45 @@ getRankings().then((rankings) => {
   etc...
 }
 */
+
+getTitleholders().then((titleholders) => {
+    console.log(titleholders);
+});
+
+/* Returns the following: 
+{
+  Flyweight: {
+    Weight: '125 lb (56.82 kg)',
+    ChampName: 'Alexandre Pantoja',
+    ChampNickname: '"The Cannibal"',
+    ChampRecord: '28-5-0 (W-L-D)',
+    ChampLastFight: 'Alexandre Pantoja vs Steve Erceg'
+  },
+  etc...
+}
+*/
+
+getRecords().then((records) => {
+    console.log(records);
+});
+
+/* Returns the following: 
+{
+  'Total Fights': {
+    '1': { fighter: 'Jim Miller', statistic: '44' },
+    '2': { fighter: 'Andrei Arlovski', statistic: '41' },
+    '3': { fighter: 'Donald Cerrone', statistic: '38' },
+    '4': { fighter: 'Clay Guida', statistic: '36' },
+    '5': { fighter: 'Rafael Dos Anjos', statistic: '35' },
+    '6': { fighter: 'Jeremy Stephens', statistic: '34' },
+    '7': { fighter: 'Demian Maia', statistic: '33' },
+    '8': { fighter: 'Charles Oliveira', statistic: '33' },
+    '9': { fighter: 'Diego Sanchez', statistic: '32' },
+    '10': { fighter: 'Neil Magny', statistic: '32' }
+  },
+  etc...
+}
+*/
 ```
 
 ## License
@@ -287,4 +391,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request if you have any improvements or bug fixes.
-

@@ -1,19 +1,43 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { FighterStats } from './interfaces/fighter_stats';
-import { FighterInfo } from './interfaces/fighter_info';
-import { Fighter } from './interfaces/fighter';
+
+interface Fighter {
+  FighterInfo: FighterInfo | null;
+  FighterStats: FighterStats | null;
+}
 
 export async function getFighter(fighterName: string = 'max holloway'): Promise<Fighter | null> {
   try {
+    let [fighterInfo, fighterStats] = await Promise.all([
+      getFighterInfo(fighterName),
+      getFighterStats(fighterName)
+    ]);
+    
     return {
-      FighterInfo: await getFighterInfo(fighterName),
-      FighterStats: await getFighterStats(fighterName),
-    }
+      FighterInfo: fighterInfo,
+      FighterStats: fighterStats
+    };
   } catch (error) {
     console.error(`Error scraping UFC.com : ${error}`);
     return null;
   }
+}
+
+interface FighterInfo {
+  Name: string;
+  Nickname: string;
+  Status: string;
+  Age: string;
+  Height: string;
+  Weight: string;
+  ArmReach: string;
+  LegReach: string;
+  FightingStyle: string;
+  Division: string;
+  PlaceOfBirth: string;
+  TrainingCamp: string;
+  OctagonDebut: string;
+  ImageURL: string | undefined;
 }
 
 export async function getFighterInfo(fighterName: string = 'max holloway'): Promise<FighterInfo | null> {
@@ -61,6 +85,16 @@ export async function getFighterInfo(fighterName: string = 'max holloway'): Prom
     console.error(`Error scraping UFC.com : ${error}`);
     return null;
   }
+}
+
+interface FighterStats {
+  Record: string;
+  WinByMethod: { KO: string, Decision: string, Submission: string };
+  AvgFightTime: string;
+  SigStrikeByPosition: {Standing: string, Clinch: string, Ground: string};
+  SigStrikeByTarget: {Head: string, Body: string, Leg: string};
+  StrikingAccuracy: {SigStrikesLanded: string, SigStrikesAttempted: string};
+  TakedownAccuracy: {TakedownsLanded: string, TakedownsAttempted: string};
 }
 
 export async function getFighterStats(fighterName: string = 'max holloway'): Promise<FighterStats| null> {
@@ -141,6 +175,91 @@ export async function getRankings(): Promise<Rankings | null> {
     return rankingsDict;
   } catch (error) {
     console.error(`Error scraping UFC.com : ${error}`);
+    return null;
+  }
+}
+
+interface Titleholders {
+  [Division: string]: {
+    Weight: string;
+    ChampName: string;
+    ChampNickname: string;
+    ChampRecord: string;
+    ChampLastFight: string;
+  };
+}
+
+export async function getTitleholders(): Promise<Titleholders | null> {
+  const url = 'https://www.ufc.com/athletes';
+
+  try {
+    const { data } = await axios.get(url);
+    const $ = cheerio.load(data);
+
+    let titleholdersDict: Titleholders = {};
+
+    $('.l-listing__item').each((i, element) => {
+      let division = $(element).find('.ath-wlcass strong').text().trim().toString();
+      let weight = $(element).find('.ath-weight').text().trim();
+      let champName = $(element).find('.ath-n__name a span').text().trim();
+      let champNickname = $(element).find('.ath-nn__nickname .field__item').text().trim();
+      let champRecord = $(element).find('.c-ath--record').text().trim();
+      let champLastFight = $(element).find('.view-fighter-last-fight .view-content .views-row').first().text().trim();
+
+      if (division) {
+        titleholdersDict[division] = {
+          Weight: weight,
+          ChampName: champName,
+          ChampNickname: champNickname,
+          ChampRecord: champRecord,
+          ChampLastFight: champLastFight,
+        };
+      }
+    });
+
+    return titleholdersDict;
+  } catch (error) {
+    console.error(`Error scraping UFC.com : ${error}`);
+    return null;
+  }
+}
+
+interface Records {
+  [category: string]: {
+    [rank: number]: {
+      fighter: string;
+      statistic: string;
+    }
+  };
+}
+
+export async function getRecords(): Promise<Records | null> {
+  const url = 'http://statleaders.ufc.com/en/career';
+
+  try {
+    const { data } = await axios.get(url);
+    const $ = cheerio.load(data);
+
+    let recordsDict: Records = {};
+
+    $('.results-group').each((i, element) => {
+      let category = $(element).find('header h3').text().trim();
+      recordsDict[category] = {};
+
+      $(element).find('.results-table--tr:not(.results-table--th)').each((index, row) => {
+        let rank = index + 1;
+        let fighter = $(row).find('span').eq(1).text().trim();
+        let total = $(row).find('span').eq(2).text().trim();
+
+        if (rank && fighter && total) {
+          recordsDict[category][rank] = { fighter, statistic: total };
+        }
+      });
+    });
+
+    return recordsDict;
+  } catch (error) {
+    console.error(`Error scraping UFC.com: ${error}`);
     return null;
   }
 }
